@@ -259,12 +259,12 @@ long LinuxParser::UpTime(int pid) {
   std::ifstream filestream(kProcDirectory + to_string(pid) + kStatFilename);
   if (filestream.is_open()) {
     for (int i = 0; filestream >> key; i++) {
-      if (i == 21) {
+      if (i == 20) {
         filestream >> key;
         break;
       }
     }
   }
-  long int uptime = stol(key);
-  return uptime / sysconf(_SC_CLK_TCK);
+  long uptime = stol(key);
+  return UpTime() - uptime / sysconf(_SC_CLK_TCK);
 }

@@ -20,7 +20,6 @@ Process::Process(int pid) : pid_(pid) {
 // DONE: Return this process's ID
 int Process::Pid() { return pid_; }
 
-
 // TODO: Return this process's CPU utilization
 float Process::CpuUtilization() const {
   string key;
@@ -36,25 +35,22 @@ float Process::CpuUtilization() const {
     float totaltime = 0;
     float seconds = 0;
     for (int i = 0; filestream >> key; i++) {
-      if (i == 12) {
-        filestream >> utime >> stime >> cutime >> cstime;
+      if (i == 12) { //coresponds to 14th position
+        filestream >> utime >> stime >> cutime >> cstime; // >> 14 >> 15 >> 16 >> 17 
         break;
       }
     }
     for (int j = 0; filestream >> key; j++) {
-      if (j == 3) {
-        filestream >> starttime;
+      if (j == 3) { //coresponds to 22nd position
+        filestream >> starttime; // >> 22
         break;
       }
     }
     totaltime = (float)(utime + stime + cutime + cstime);
-    seconds = LinuxParser::UpTime() - (starttime / sysconf(_SC_CLK_TCK));
-    if (seconds <= 0) {
-      return 69;
-    }
-    return (((totaltime / sysconf(_SC_CLK_TCK)) / seconds));
+    seconds = LinuxParser::UpTime() - starttime / sysconf(_SC_CLK_TCK);
+    return (totaltime / sysconf(_SC_CLK_TCK)) / seconds;
   }
-  return 42;
+  return 0;
 }
 
 // DONE: Return the command that generated this process
